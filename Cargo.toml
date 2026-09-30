@@ -1,6 +1,18 @@
 [package]
 name = "qrforge"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
+
+[lib]
+name = "qrforge"
+path = "src/lib.rs"
+
+[[bin]]
+name = "qrforge"
+path = "src/main.rs"
 
 [dependencies]
+clap = { version = "4", features = ["derive"] }
+qrcode = "0.14"
+image = "0.25"
+viuer = "0.9"
