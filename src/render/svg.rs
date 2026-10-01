@@ -1,6 +1,6 @@
-use qrcode::QrCode;
-use crate::error::QrError;
 use super::SvgOpts;
+use crate::error::QrError;
+use qrcode::QrCode;
 
 pub fn to_svg(code: &QrCode, opts: SvgOpts) -> Result<String, QrError> {
     let matrix = code.to_colors();
@@ -31,21 +31,21 @@ pub fn to_svg(code: &QrCode, opts: SvgOpts) -> Result<String, QrError> {
             let y = (row + quiet) * scale;
 
             rects.push_str(&format!(
-                r#"<rect x="{x}" y="{y}" width="{scale}" height="{scale}" fill="#{fg_hex}"/>"#
+                r#"<rect x="{x}" y="{y}" width="{scale}" height="{scale}" fill="{fg_hex}"/>"#
             ));
         }
     }
 
     let svg = format!(
         r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {img_size} {img_size}" width="{img_size}" height="{img_size}">
-          <rect width="100%" height="100%" fill="#{bg_hex}"/>
-          {rects}
-        </svg>"#
+      <rect width="100%" height="100%" fill="{bg_hex}"/>
+      {rects}
+    </svg>"#
     );
 
     Ok(svg)
 }
 
 fn rgb_to_hex(rgb: [u8; 3]) -> String {
-    format!("{:02x}{:02x}{:02x}", rgb[0], rgb[1], rgb[2])
+    format!("#{:02x}{:02x}{:02x}", rgb[0], rgb[1], rgb[2])
 }

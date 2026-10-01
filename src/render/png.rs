@@ -1,7 +1,7 @@
+use super::PngOpts;
+use crate::error::QrError;
 use image::{DynamicImage, ImageBuffer, Rgb};
 use qrcode::QrCode;
-use crate::error::QrError;
-use super::PngOpts;
 
 pub fn to_png(code: &QrCode, opts: PngOpts) -> Result<DynamicImage, QrError> {
     let matrix = code.to_colors();
@@ -11,16 +11,14 @@ pub fn to_png(code: &QrCode, opts: PngOpts) -> Result<DynamicImage, QrError> {
     let scale = opts.scale;
 
     let (fg, bg) = if opts.invert {
-        (opts.colors.gb, opts.colors.fg)
+        (opts.colors.bg, opts.colors.fg)
     } else {
         (opts.colors.fg, opts.colors.bg)
     };
 
     let img_size = (width as u32 + quiet * 2) * scale;
 
-    let mut img = ImageBuffer::from_fn(img_size, img_size, |_, _| {
-        Rgb(bg)
-    });
+    let mut img = ImageBuffer::from_fn(img_size, img_size, |_, _| Rgb(bg));
 
     for (i, colors) in matrix.iter().enumerate() {
         let row = (i / width) as u32;
@@ -32,7 +30,7 @@ pub fn to_png(code: &QrCode, opts: PngOpts) -> Result<DynamicImage, QrError> {
 
             for dy in 0..scale {
                 for dx in 0..scale {
-                    img.put_pixel(x + dx, y + dy, Rgb(fg))                              
+                    img.put_pixel(x + dx, y + dy, Rgb(fg))
                 }
             }
         }
