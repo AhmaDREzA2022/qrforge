@@ -6,7 +6,7 @@ const MAX_BYTES_M: usize = 2331;
 const MAX_BYTES_Q: usize = 1663;
 const MAX_BYTES_H: usize = 1273;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum EccLevel {
     L, // Low        ~7% damage recovery
     M, // Medium    ~15% damage recovery
@@ -47,12 +47,12 @@ pub fn parse_hex_color(hex: &str) -> Result<[u8; 3], QrError> {
         return Err(QrError::InvalidColor(format!("#{hex}")));
     }
 
-    let r = u8::from_str_radix(&hex[0..2], 16)
-        .map_err(|_| QrError::InvalidColor(format!("#{hex}")))?;
-    let g = u8::from_str_radix(&hex[2..4], 16)
-        .map_err(|_| QrError::InvalidColor(format!("#{hex}")))?;
-    let b = u8::from_str_radix(&hex[4..6], 16)
-        .map_err(|_| QrError::InvalidColor(format!("#{hex}")))?;
+    let r =
+        u8::from_str_radix(&hex[0..2], 16).map_err(|_| QrError::InvalidColor(format!("#{hex}")))?;
+    let g =
+        u8::from_str_radix(&hex[2..4], 16).map_err(|_| QrError::InvalidColor(format!("#{hex}")))?;
+    let b =
+        u8::from_str_radix(&hex[4..6], 16).map_err(|_| QrError::InvalidColor(format!("#{hex}")))?;
 
     Ok([r, g, b])
 }
