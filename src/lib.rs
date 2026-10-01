@@ -1,6 +1,9 @@
 pub mod error;
 pub use error::QrError;
 
+pub mod validation;
+pub use validation::{validate_data, EccLevel, parse_hex_color};
+
 use std::char;
 
 use image::Luma;
