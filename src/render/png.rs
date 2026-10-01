@@ -10,10 +10,10 @@ pub fn to_png(code: &QrCode, opts: PngOpts) -> Result<DynamicImage, QrError> {
     let quiet = opts.quiet_zone;
     let scale = opts.scale;
 
-    let (fg, bg) = if opt.invert {
-        (opts.color.gb, opts.color.fg)
+    let (fg, bg) = if opts.invert {
+        (opts.colors.gb, opts.colors.fg)
     } else {
-        (opts.color.fg, opts.color.bg)
+        (opts.colors.fg, opts.colors.bg)
     };
 
     let img_size = (width as u32 + quiet * 2) * scale;
