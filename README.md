@@ -1,5 +1,8 @@
 # qrforge
 
+![Rust](https://img.shields.io/badge/rust-1.70%2B-orange?logo=rust)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 A fast, flexible QR code generator for the terminal, built with Rust.
 
 ## Features
