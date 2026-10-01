@@ -1,11 +1,19 @@
+use clap::CommandFactory;
+use clap_complete::{generate as generate_completions, Shell};
+use std::io;
+
 use clap::{Parser, ValueEnum};
 use qrforge::{generate, parse_hex_color, ColorOptions, EccLevel, PrintMode, QrOptions};
 
 #[derive(Parser)]
-#[command(name = "qrforge", about = "Generate QR codes from the terminal", version)]
+#[command(
+    name = "qrforge",
+    about = "Generate QR codes from the terminal",
+    version
+)]
 struct Cli {
     /// The text or URL to encode
-    data: String,
+    data: Option<String>,
 
     /// Save the QR code to a file (.png or .svg)
     #[arg(short, long, value_name = "FILE")]
@@ -38,6 +46,10 @@ struct Cli {
     /// Invert foreground and background colors
     #[arg(long, default_value = "false")]
     invert: bool,
+
+    /// Generate shell completions for the given shell
+    #[arg(long, value_name = "SHELL", exclusive = true)]
+    completions: Option<Shell>,
 }
 
 #[derive(ValueEnum, Clone)]
@@ -57,6 +69,22 @@ enum EccArg {
 
 fn main() {
     let cli = Cli::parse();
+
+    // handle completions first and exit
+    if let Some(shell) = cli.completions {
+        generate_completions(shell, &mut Cli::command(), "qrforge", &mut io::stdout());
+        return;
+    }
+
+    // data is required for everything else
+    let data = match cli.data {
+        Some(d) => d,
+        None => {
+            eprintln!("Error: data argument is required");
+            eprintln!("Usage: qrforge [OPTIONS] <DATA>");
+            std::process::exit(1);
+        }
+    };
 
     let fg = match parse_hex_color(&cli.fg) {
         Ok(c) => c,
@@ -88,7 +116,7 @@ fn main() {
     });
 
     let opts = QrOptions {
-        data: cli.data,
+        data,
         output: cli.output,
         print_mode,
         ecc,

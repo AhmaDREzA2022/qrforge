@@ -16,4 +16,4 @@ clap = { version = "4", features = ["derive"] }
 qrcode = "0.14"
 image = "0.25"
 viuer = "0.9"
-
+clap_complete = "4"
