@@ -1,3 +1,6 @@
+pub mod error;
+pub use error::QrError;
+
 use std::char;
 
 use image::Luma;
