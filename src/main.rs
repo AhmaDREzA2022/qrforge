@@ -2,7 +2,7 @@ use clap::{Parser, ValueEnum};
 use qrforge::{generate, parse_hex_color, ColorOptions, EccLevel, PrintMode, QrOptions};
 
 #[derive(Parser)]
-#[command(name = "qrforge", about = "Generate QR codes from the terminal")]
+#[command(name = "qrforge", about = "Generate QR codes from the terminal", version)]
 struct Cli {
     /// The text or URL to encode
     data: String,
